@@ -1,2 +1,2 @@
-# Image Color Changer
- image color changer
+# Simple Image editor
+simple image editor
