@@ -7,7 +7,7 @@ import os
 root = tk.Tk()
 root.geometry("1400x800")
 root.resizable(0, 0)
-root.title("Image Color Changer")
+root.title("Simple Image Editor")
 
 
 def display_image():
