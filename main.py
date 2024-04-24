@@ -10,12 +10,32 @@ root.resizable(0, 0)
 root.title("Simple Image Editor")
 
 
-def display_image():
+def get_directory():
+    """Gets the directory of a selected image in file explorer"""
+    global filepath
+
     file = tk.filedialog.askopenfile(mode="r")
     if file:
-        filepath = os.path.abspath(file.name)
+        try:
+            filepath
+        except:
+            replace = False
+        else:
+            global replace
+            replace = True
+        finally:
+            filepath = os.path.abspath(file.name)
+            display_image(filepath, replace)
 
-    image = Image.open(filepath)
+
+def display_image(directory, replace):
+    """Displays image on window with fixed height"""
+    global image_label
+
+    if replace == True:
+        image_label.pack_forget()
+
+    image = Image.open(directory)
 
     aspect_ratio = image.width / image.height
     new_width = int(650 * aspect_ratio)
@@ -33,6 +53,6 @@ label = tk.Label(root, text="Click the Button to browse the Files")
 label.pack(pady=10)
 
 # Create a Button
-button = tk.Button(root, text="Browse", command=display_image).pack(pady=20)
+button = tk.Button(root, text="Browse", command=get_directory).pack(pady=20)
 
 root.mainloop()
