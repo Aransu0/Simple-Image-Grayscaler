@@ -34,7 +34,7 @@ def get_directory():
 def display_image(directory, replace, grayscale=False):
     """Displays image on window with fixed height"""
     global image_label
-    global new_image
+    global image
 
     if replace == True:
         # If an image is already displayed, remove it
@@ -52,7 +52,11 @@ def display_image(directory, replace, grayscale=False):
     resized = image.resize((new_width, 625), Image.Resampling.LANCZOS)
 
     if grayscale == True:
-        image = image.save("image_exports/new_image.png", "PNG")
+        i = 1
+        while os.path.isfile(f"image_exports/new_image_{i}.png") == True:
+            i += 1
+
+        image = image.save(f"image_exports/new_image_{i}.png", "PNG")
 
     # Replace old image with the resized version
     new_image = ImageTk.PhotoImage(resized)
