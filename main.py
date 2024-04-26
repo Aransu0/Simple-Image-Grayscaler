@@ -31,21 +31,28 @@ def get_directory():
             display_image(filepath, replace)
 
 
-def display_image(directory, replace):
+def display_image(directory, replace, grayscale=False):
     """Displays image on window with fixed height"""
     global image_label
+    global new_image
 
     if replace == True:
         # If an image is already displayed, remove it
         image_label.pack_forget()
 
-    # Get image from file
-    image = Image.open(directory)
+    if grayscale == True:
+        # Get image from file
+        image = Image.open(directory).convert("L")
+    else:
+        image = Image.open(directory)
 
     # Resize images to a fixed height
     aspect_ratio = image.width / image.height
-    new_width = int(650 * aspect_ratio)
-    resized = image.resize((new_width, 650), Image.Resampling.LANCZOS)
+    new_width = int(625 * aspect_ratio)
+    resized = image.resize((new_width, 625), Image.Resampling.LANCZOS)
+
+    if grayscale == True:
+        image = image.save("image_exports/new_image.png", "PNG")
 
     # Replace old image with the resized version
     new_image = ImageTk.PhotoImage(resized)
@@ -56,11 +63,13 @@ def display_image(directory, replace):
     image_label.pack()
 
 
-# Add a label widget
-label = tk.Label(root, text="Click the Button to browse the Files")
-label.pack(pady=10)
+def grayscale():
+    display_image(filepath, True, True)
+
 
 # Create a button
-button = tk.Button(root, text="Browse", command=get_directory).pack(pady=20)
+button = tk.Button(root, text="Browse", command=get_directory).pack(pady=10)
+
+grayscale_button = tk.Button(root, text="Grayscale", command=grayscale).pack(pady=10)
 
 root.mainloop()
